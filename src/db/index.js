@@ -7,7 +7,7 @@ class Db {
 	async connect() {
 		if (!db) {
 			db = await MongoClient.connect(config.db.url);
-			this.Dogs = new Model(db, 'dogs');
+			this.Dog = new Model(db, 'dogs');
 		}
 	}
 };

@@ -22,6 +22,14 @@ class Model {
 		}
 		return result;
 	}
+
+	async findAll() {
+		const result = await this.db.collection(this.name).find();
+		if (!result) {
+			throw new Error('Db findOneById error');
+		}
+		return result.toArray();
+	}
 	async findOneAndUpdate(id, data) {
 		const query = {_id: ObjectId(id)};
 		const modifier = {$set: data};

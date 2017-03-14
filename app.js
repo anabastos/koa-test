@@ -11,21 +11,24 @@ var views = require('koa-views');
  
 app.use(views(__dirname, { map: {html: 'nunjucks' }}))
  
-app.use(async function (ctx) {
-  await ctx.render('views/home.html')
-})
+// app.use(async function (ctx) {
+//   await ctx.render('views/home.html')
+// })
 
 app.use(handleErrors);
 app.use(bodyParser());
 router.get('/error/test', async () => {
 	throw Error('Error handling works!');
 });
-router.get('/', (ctx) => ctx.body = {hello: 'world'});
+router.get('/', async (ctx) => ctx.render('views/home.html'));
 
-router.post('/dogs', async (ctx, next) => {
+router.post('/dog', async (ctx, next) => {
 	const data = ctx.request.body;
 	ctx.body = await db.Dog.insertOne(data);
 });
+router.get('/dogs', async (ctx, next) => {
+	ctx.body = await db.Dog.findAll();
+})
 router.get('/dogs/:id', async (ctx, next) => {
 	const id = ctx.params.id;
 	ctx.body = await db.Dog.findOneById(id);
