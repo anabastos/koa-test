@@ -45,13 +45,14 @@ router.del('/dogs/:id', async (ctx, next) => {
 
 app.use(router.routes());
 
-db
-.connect()
-.then(() => {
-	app.listen(config.port, () => {
-		console.info(`Escutando o http://localhost:${config.port}`);
-	});
-})
-.catch((err) => {
-	console.error('ERR:', err);
-});
+(async (app, config, db) => {
+	try {
+		await db.connect();
+	
+		app.listen(config.port, () => {
+			console.info(`Escutando o http://localhost:${config.port}`);
+		});
+	} catch (err) {
+		console.error('ERR:', err);
+	}
+})(app, config, db)
